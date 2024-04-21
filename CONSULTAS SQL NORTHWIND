@@ -1,0 +1,51 @@
+CONSULTAS SQL CON BASE DE DATOS NORTHWIND:
+
+
+-- OBTENER LOS DISTINTOS PUESTOS DE TRABAJO
+SELECT Title FROM employees;
+
+-- Obtener los subordinados del empleado número 5
+SELECT ReportsTo 
+FROM employees 
+WHERE EmployeeID = 5;
+
+-- Ordenar los empleados según su antigüedad en la empresa
+SELECT HireDate 
+FROM employees 
+ORDER BY HireDate DESC;
+
+-- Obtener los datos de las empleadas solteras de la empresa
+SELECT * 
+FROM employees 
+WHERE TitleOfCourtesy = 'Ms.';
+
+-- Obtener el número de pedidos que se hizo en el año 1997 ---> En este caso, ordené por OrderDate, apareciendo mensaje de error, al no haber OrderDate con ese año.
+SELECT * 
+FROM orders 
+WHERE OrderDate = '1997';
+*** Vuelvo a hacer la consulta con 1996:
+
+
+-- NOTA: NO ME SALE LAS CONSULTAS  CON EL AÑO. SOSPECHO QUE HAY ALGUN PROBLEMA SOLICITANDO LA FECHA.
+
+-- obtener el número de empleados estadounidenses de  la empresa
+SELECT Count(*) AS CantidadDeEmpleados 
+FROM employees 
+WHERE Country = 'USA';
+
+-- Obtener los diferentes precios a los que se ha vendido el queso cabrales ( ProductID = 11 )
+SELECT DISTINCT UnitPrice 
+FROM products 
+WHERE ProductID = '11';
+
+-- Obtener los proveedores franceses
+SELECT CompanyName
+FROM suppliers
+WHERE Country = 'France';
+
+-- Obtener la cantidad de queso de cabrales que se ha pedido en total ( ProductID = 11 )
+SELECT SUM(Quantity) AS CantidadTotalPedida
+FROM order_details 
+WHERE ProductID = '11';
+
+-- Ordenar los productos de mayor a menor cantidad solicitada en total
