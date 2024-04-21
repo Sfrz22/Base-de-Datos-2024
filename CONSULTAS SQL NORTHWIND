@@ -49,3 +49,4 @@ FROM order_details
 WHERE ProductID = '11';
 
 -- Ordenar los productos de mayor a menor cantidad solicitada en total
+
