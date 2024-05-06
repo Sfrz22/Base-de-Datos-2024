@@ -49,4 +49,82 @@ FROM order_details
 WHERE ProductID = '11';
 
 -- Ordenar los productos de mayor a menor cantidad solicitada en total
+SELECT ProductID, SUM(UnitsOnOrder) AS Cantidad_Total
+From products
+GROUP BY ProductID
+ORDER BY UnitsOnOrder DESC
 
+-- Mostrar la cuantía total de cada pedido ordenado de mayor a menor junto con la fecha y el nombre del cliente que lo hizo
+SELECT ID, SUM(Quantity) AS CuantiaTotal
+FROM `order_details`
+ORDER BY Quantity DESC;
+
+-- Se desea saber cuáles son los 5 mejores clientes de nuestra compañía.
+Entendiéndose por mejores clientes aquellas empresas que nos han dejado más dinero ( los clientes que la cuantía que suman todos sus pedidos sea la mayor)
+
+
+-- ¿ de qué país tenemos más clientes ?
+
+SELECT COUNT(DISTINCT CustomerID) AS cantidad_clientes, Country
+FROM `customers`
+GROUP BY Country
+ORDER BY cantidad_clientes DESC
+LIMIT 1;
+
+-- Obtener la edad que tenía cada empleado al entrar en la empresa
+
+SELECT EmployeeID, YEAR(HireDate) - YEAR(BirthDate) AS edad_contratado
+FROM employees;
+
+-- Calcular ahora la edad media a la que un empleado entra en la empresa
+
+SELECT EmployeeID, AVG(YEAR(HireDate) - YEAR(BirthDate)) AS edad_media_contratado
+FROM employees;
+
+-- Mostrar el ID de los empleados que tengan a otros empleados a su cargo
+
+SELECT EmployeeID, ReportsTo
+FROM `employees` 
+WHERE ReportsTo > 0;
+
+-- Mostrar los pedidos que deben ser enviados fuera de USA
+SELECT OrderID, ShipCountry
+FROM `orders` 
+WHERE ShipCountry <> 'USA';
+
+-- Mostrar los pedidos que aún no se han enviado
+SELECT OrderID, RequiredDate, ShippedDate
+FROM `orders`
+WHERE RequiredDate < ShippedDate;
+
+-- ¿ qué productos de los que ya no se va a seguir trabajando con ellos tenía un precio más alto ?
+SELECT ProductID, Discontinued, MAX(UnitPrice)
+FROM products
+WHERE Discontinued = 'y'
+GROUP BY ProductID
+ORDER BY UnitPrice ASC;
+
+-- Obtener los nombre de los productos que sean quesos
+SELECT ProductName, CategoryID 
+FROM `products`
+WHERE CategoryID = 4; 
+
+-- ordenar los productos del más caro al más barato precio por unidad
+SELECT ProductID, UnitPrice
+FROM products
+ORDER BY UnitPrice DESC;
+
+-- Obtener cuántos proveedores distintos suministran actualmente quesos a la empresa ( categoría 4 )
+SELECT COUNT(SupplierID), CategoryID
+FROM products
+WHERE CategoryID = '4';
+
+-- todos los productos tienen una cantidad llamada "reorderlevel" que si el stock baja de esa cifra se debe solicitar del 
+proveedor que reponga el producto. Detectar que productos hay que solicitar a su proveedor que reponga. 
+Tener en cuenta que ya hay productos a los que se les ha detectado que precisan de reposición y se le ha solicitado a su proveedor que traiga una cantidad de ese producto. 
+Eso lo vemos en el campo "UnitsOnOrder" que nos dice la cantidad de producto que se ha solicitado reponer.
+
+-- Empleados contratados en 1993
+SELECT COUNT(EmployeeID), HireDate
+FROM `employees` 
+WHERE YEAR (HireDate) = '1993';
