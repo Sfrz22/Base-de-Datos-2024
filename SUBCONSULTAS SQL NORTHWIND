@@ -1,1 +1,16 @@
--- 
+-- mostrar todas las categorias y en cada fila además de la categoría mostrar el nombre del producto
+con el precio más alto de esa categoría ( también mostrar el precio de ese producto )
+
+SELECT products.CategoryID, products.ProductName, products.UnitPrice, categoria_preciomax.CategoryName
+FROM `products` INNER JOIN
+	(
+     SELECT MAX(UnitPrice) AS preciomaximo, products.CategoryID, categories.CategoryName
+     FROM products INNER JOIN categories
+     ON products.CategoryID = categories.CategoryID
+     GROUP BY products.CategoryID
+     )categoria_preciomax
+ON products.CategoryID = categoria_preciomax.CategoryID
+WHERE products.UnitPrice = categoria_preciomax.preciomaximo
+
+-- Obtener una lista de empleados junto con el total de ventas de sus pedidos,
+donde se incluyan solo aquellos empleados que hayan vendido más que la media
